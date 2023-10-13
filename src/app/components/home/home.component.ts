@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { elementAt } from 'rxjs';
 import {listAddressAPI, addressBtIdAPI} from 'src/app/api-uri/address-api';
 import { HttpService } from 'src/app/services/http.service';
+import { NgxScrollEvent } from 'ngx-scroll-event/dist/ngx-scroll-event';
 
 @Component({
   selector: 'app-home',
@@ -11,22 +12,17 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class HomeComponent implements OnInit{
 
-  element!: HTMLElement | null;
+  
 
   constructor(private httpService: HttpService) {
     
   }
 
+  element:any;
+
   ngOnInit(): void {
     console.log("Home component");
-    this.element = document.querySelector(".result-list");
-
-    this.element?.addEventListener("scrollend", ()=> {
-      console.log("scroll-end");
-    })
   }
-
-  
 
   address1!:  string;
   address2!:  string;
@@ -38,24 +34,48 @@ export class HomeComponent implements OnInit{
   searchInput: string = "";
   listAddress: any = [];
   address: any  = {};
-  hideSearchList: boolean = true
+  showList: boolean = false;
+  pageNo : number =  0;
+  pageSize : number = 20;
+  
 
   searhAddress = (value : string) => {
-    console.log(value);
 
-    const options = {
+      const options = {
         headers : new HttpHeaders({
           "content-type" : "application/json"
         }),
         mode: 'cors'
       } 
 
-        if (value.length >= 3) {
-            this.httpService.doGet(listAddressAPI(value), options).subscribe((res) => {
-            this.listAddress = res;
-            this.hideSearchList = false;
-            console.log(this.listAddress);
+      if(value.length > 0) {
+          this.httpService.doGet(listAddressAPI(value, this.pageNo, this.pageSize), options).subscribe((res) => {
+            this.resetApiObjects()
+            this.listAddress = this.listAddress.concat(res);
+            if(this.listAddress.length > 0) {
+              this.showList = true;
+            } 
+            
         });
+      } else{
+        this.resetApiObjects()
+      }
+    }
+
+    async handleScroll(event : any){
+
+      const options = {
+        headers : new HttpHeaders({
+          "content-type" : "application/json"
+        }),
+        mode: 'cors'
+      } 
+   
+      if (this.listAddress.length > 0 && event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - 1) {
+          this.pageNo += 1;
+           await this.httpService.doGet(listAddressAPI(this.searchInput, this.pageNo, this.pageSize), options).subscribe((res) => {
+            this.listAddress = this.listAddress.concat(res);
+          });
       }
     }
 
@@ -73,8 +93,7 @@ export class HomeComponent implements OnInit{
           this.city = this.address.city;
           this.state = this.address.state;
           this.zipcode = this.address.postcode;
-          this.listAddress = [];
-          this.hideSearchList = true;
+          this.resetApiObjects()
         });
       }
 
@@ -83,6 +102,12 @@ export class HomeComponent implements OnInit{
         this.city = '';
         this.state = '';
         this.zipcode = '';
+      }
+
+      resetApiObjects() {
+        this.listAddress = []
+        this.pageNo = 0
+        this.showList = false
       }
       
 }

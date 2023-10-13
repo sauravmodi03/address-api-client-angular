@@ -1,13 +1,14 @@
 
-<main class="home-container">
+<main class="home-container" ng-app="home-container"
+    ng-controller="home-controller">
     <section class="wrapper">
         <section class="search-area">
             <input type="text" class="input-search" [(ngModel)]="searchInput"
                 name="Input Search"
                 (ngModelChange)="searhAddress(searchInput)"
                 placeholder="Searh you address here..." />
-            <aside class="result-list" ng-hide="hideSearchList">
-                <div class="list-wrapper">
+            <aside class="result-list" *ngIf="showList">
+                <div class="list-wrapper" (scroll)="handleScroll($event)">
                     <div class="address-options" *ngFor="let a of listAddress"
                         (click)="getAddressById(a.id)">
                         {{a.streetNo + " " + a.streetName +" "+ a.stateCode +" "+a.postcode}}

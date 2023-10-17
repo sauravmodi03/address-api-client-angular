@@ -79,6 +79,12 @@ export class HomeComponent implements OnInit{
       }
     }
 
+    handleBlur(){
+      if(this.searchInput.length == 0){
+        this.resetApiObjects();
+      }
+    }
+
       getAddressById(id:string){
         const options = {
           headers : new HttpHeaders({

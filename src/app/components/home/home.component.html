@@ -1,4 +1,16 @@
 
+<header>
+    <section>
+        <picture>
+            <svg width="693" height="800" viewBox="0 0 693 800" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M346.41 0L692.82 200V600L346.41 800L0 600V200L346.41 0ZM346.41 50L649.519 225V575L346.41 750L43.3013 575V225L346.41 50ZM316 197.5V149L96 273.624V523.872L316 650V602L157 510V290.5L316 197.5ZM376 197.5V149L596 273.624V523.872L376 650V602L535 510V290.5L376 197.5ZM316 293V313.878L229.273 353.104V445.685L316 484.489V506L196 451.536V345.986L316 293ZM376 313.878V293L496 345.986V451.536L376 506V484.489L462.727 445.685V353.104L376 313.878Z"
+                    fill="#F8F0E5" />
+            </svg>
+        </picture>
+    </section>
+</header>
 <main class="home-container" ng-app="home-container"
     ng-controller="home-controller">
     <section class="wrapper">
@@ -6,6 +18,7 @@
             <input type="text" class="input-search" [(ngModel)]="searchInput"
                 name="Input Search"
                 (ngModelChange)="searhAddress(searchInput)"
+                (blur)="handleBlur()"
                 placeholder="Searh you address here..." />
             <aside class="result-list" *ngIf="showList">
                 <div class="list-wrapper" (scroll)="handleScroll($event)">
@@ -34,3 +47,16 @@
         </section>
     </section>
 </main>
+
+<footer>
+    <section>
+        <picture>
+            <svg width="693" height="800" viewBox="0 0 693 800" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M346.41 0L692.82 200V600L346.41 800L0 600V200L346.41 0ZM346.41 50L649.519 225V575L346.41 750L43.3013 575V225L346.41 50ZM316 197.5V149L96 273.624V523.872L316 650V602L157 510V290.5L316 197.5ZM376 197.5V149L596 273.624V523.872L376 650V602L535 510V290.5L376 197.5ZM316 293V313.878L229.273 353.104V445.685L316 484.489V506L196 451.536V345.986L316 293ZM376 313.878V293L496 345.986V451.536L376 506V484.489L462.727 445.685V353.104L376 313.878Z"
+                    fill="#F8F0E5" />
+            </svg></picture>
+        <small>© 2023 CC. All rights reserved.</small>
+    </section>
+</footer>
